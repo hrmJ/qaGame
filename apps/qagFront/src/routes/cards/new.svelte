@@ -1,26 +1,21 @@
 <script lang="ts">
-	let x: string = '';
-	type card = { id: number };
-	let promise;
+	let cardSaveState: Promise<void>;
 	async function saveCard() {
-		try {
-			const res = await fetch('/cards/', { method: 'POST' });
-			const json = await res.json();
-			return json;
-		} catch (e) {
-			return null;
-		}
+		const res = await fetch('/cards/', { method: 'POST' }).catch(() => null);
+		if (!res?.ok) throw new Error('Tallentaminen ei onnistunut');
 	}
 	function submit(ev: SubmitEvent) {
 		ev.preventDefault();
-		promise = saveCard();
+		cardSaveState = saveCard();
 	}
 </script>
 
-{#await promise}
+{#await cardSaveState}
 	Tallennetaan
 {:then _}
 	Tallennettu
+{:catch err}
+	{err.message}
 {/await}
 
 <form on:submit={submit}>

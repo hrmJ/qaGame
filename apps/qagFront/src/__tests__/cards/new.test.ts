@@ -23,15 +23,19 @@ describe('Form for adding new card', () => {
 
 	it('Shows a message if card succesfully submitted', async () => {
 		const id = 1;
-		// TODO
-		server.use(rest.post('cards', (_, res, ctx) => res(ctx.status(201), ctx.json({ id }))));
+		server.use(rest.post('/cards', (_, res, ctx) => res(ctx.status(201), ctx.json({ id }))));
 		const { getByRole, findByText } = render(NewCardForm);
 		const submit = getByRole('button', { name: /Tallenna/ });
 		await userEvent.click(submit);
 		await findByText('Tallennettu');
 	});
 
-	it('Shows a message if card not succesfully submitted', () => {
-		// TODO
+	it('Shows a message if card not succesfully submitted', async () => {
+		const error = 'Some error';
+		server.use(rest.post('/cards', (_, res, ctx) => res(ctx.status(400), ctx.json({ error }))));
+		const { getByRole, findByText } = render(NewCardForm);
+		const submit = getByRole('button', { name: /Tallenna/ });
+		await userEvent.click(submit);
+		await findByText(/ei onnistunut/);
 	});
 });
