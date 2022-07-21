@@ -21,6 +21,12 @@ describe('Form for adding new card', () => {
 		getByRole('radio', { name: /Kortin tyyppi/ });
 	});
 
+	it('Initially shows no info about saving', () => {
+		const { queryByText } = render(NewCardForm);
+		expect(queryByText('Tallennettu')).not.toBeInTheDocument();
+		expect(queryByText('ei onnistunut')).not.toBeInTheDocument();
+	});
+
 	it('Shows a message if card succesfully submitted', async () => {
 		const id = 1;
 		server.use(rest.post('/cards', (_, res, ctx) => res(ctx.status(201), ctx.json({ id }))));
