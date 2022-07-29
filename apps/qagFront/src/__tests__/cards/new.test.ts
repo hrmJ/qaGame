@@ -16,9 +16,12 @@ describe('Form for adding new card', () => {
 		getByLabelText('Kortin teksti');
 	});
 
-	it('Has the ability to choose q or a', () => {
+	it.only('Has the ability to choose q or a with q as default', () => {
 		const { getByRole } = render(NewCardForm);
-		getByRole('radio', { name: /Kortin tyyppi/ });
+		const radioQ = getByRole('radio', { name: /Kysymys/ });
+		const radioA = getByRole('radio', { name: /Vastaus/ });
+		expect(radioQ).toBeChecked();
+		expect(radioA).not.toBeChecked();
 	});
 
 	it('Initially shows no info about saving', () => {
