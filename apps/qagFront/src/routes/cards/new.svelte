@@ -1,5 +1,5 @@
 <script lang="ts">
-	let cardSaveState: Promise<Response>;
+	let cardSaveState: Promise<Response> | null;
 	async function saveCard() {
 		const res = await fetch('/cards/', { method: 'POST' }).catch(() => null);
 		if (!res?.ok) throw new Error('Tallentaminen ei onnistunut');
@@ -8,6 +8,7 @@
 	function submit(ev: SubmitEvent) {
 		ev.preventDefault();
 		cardSaveState = saveCard();
+		setTimeout(() => (cardSaveState = null), 3000);
 		return cardSaveState;
 	}
 </script>
