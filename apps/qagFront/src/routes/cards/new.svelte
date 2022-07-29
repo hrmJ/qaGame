@@ -5,8 +5,13 @@
 		text: string;
 	}
 	let card: Card = { contentType: 'q', text: '' };
+	const apiUrl = 'http://localhost:3000';
 	async function saveCard() {
-		const res = await fetch('/cards/', { method: 'POST' }).catch(() => null);
+		const res = await fetch(`${apiUrl}/cards`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(card)
+		}).catch(() => null);
 		if (!res?.ok) throw new Error('Tallentaminen ei onnistunut');
 		return res;
 	}
@@ -29,7 +34,7 @@
 {/await}
 
 <form on:submit={submit}>
-	<label for="content">Kortin teksti</label> <textarea id="content" />
+	<label for="content">Kortin teksti</label> <textarea id="content" bind:value={card.text} />
 
 	<label for="contentType1">Kysymys</label>
 	<input

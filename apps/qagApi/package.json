@@ -21,6 +21,7 @@
     "vitest": "^0.17.1"
   },
   "dependencies": {
+    "@fastify/cors": "^8.0.0",
     "node-pg-migrate": "^6.2.2",
     "pg": "^8.7.3",
     "postgres": "^3.2.4"

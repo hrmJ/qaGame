@@ -2,8 +2,10 @@
 	const useMsw = import.meta.env.DEV;
 	let isReady = !useMsw;
 
-	if (useMsw) {
+	if (useMsw && false) {
 		import('$msw').then((res) => res.inject()).then(() => (isReady = true));
+	} else {
+		isReady = true;
 	}
 </script>
 
