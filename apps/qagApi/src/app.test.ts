@@ -15,4 +15,13 @@ describe("Enpoint for saving cards", () => {
     });
     expect(resp.statusCode).toEqual(200);
   });
+
+  it.skip("returns 422 if text is empty", async () => {
+    const resp = await app.inject({
+      method: "POST",
+      url: "/cards",
+      payload: { contentType: "Q", text: "" },
+    });
+    expect(resp.statusCode).toEqual(422);
+  });
 });
