@@ -7,5 +7,9 @@ export function build(opts: FastifyServerOptions = {}) {
     return { hello: "sworld" };
   });
 
+  app.post("/cards", async () => {
+    return { id: 1 };
+  });
+
   return app;
 }
