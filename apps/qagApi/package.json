@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn src/server.ts",
-    "migrate": "node-pg-migrate",
-    "test": "vitest"
+    "dev": "export $(cat .env | xargs)  && ts-node-dev --respawn src/server.ts",
+    "migrate": "export $(cat .env | xargs) && node-pg-migrate",
+    "migrate:test:up": "export $(cat .env.test | xargs) && node-pg-migrate up",
+    "migrate:test:down": "export $(cat .env.test | xargs) && node-pg-migrate down",
+    "test": "export $(cat .env.test | xargs)  &&  vitest"
   },
   "keywords": [],
   "author": "",
@@ -20,6 +22,7 @@
   },
   "dependencies": {
     "node-pg-migrate": "^6.2.2",
-    "pg": "^8.7.3"
+    "pg": "^8.7.3",
+    "postgres": "^3.2.4"
   }
 }

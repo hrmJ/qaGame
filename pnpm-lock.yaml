@@ -45,12 +45,14 @@ importers:
       fastify: ^4.2.0
       node-pg-migrate: ^6.2.2
       pg: ^8.7.3
+      postgres: ^3.2.4
       ts-node-dev: ^2.0.0
       typescript: ^4.5.2
       vitest: ^0.17.1
     dependencies:
       node-pg-migrate: 6.2.2_pg@8.7.3
       pg: 8.7.3
+      postgres: 3.2.4
     devDependencies:
       '@types/node': 17.0.45
       fastify: 4.2.0
@@ -3843,6 +3845,10 @@ packages:
     engines: {node: '>=0.10.0'}
     dependencies:
       xtend: 4.0.2
+    dev: false
+
+  /postgres/3.2.4:
+    resolution: {integrity: sha512-iscysD+ZlM4A9zj0RS2zo3f4Us4yuov94Yx+p3dE1rEARaBHC8R3/gRq40KEnWp1lxjuFq9EjuAenIUsPaTaDA==}
     dev: false
 
   /prelude-ls/1.1.2:

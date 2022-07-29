@@ -15,10 +15,16 @@ services:
     volumes:
       - ./db:/docker-entrypoint-initdb.d/
 
-  # testdb:
-  #   image: postgres
-  #   restart: always
-  #   environment:
-  #     POSTGRES_PASSWORD: example
-  #   ports:
-  #     - 4432:5432
+  testdb:
+    image: postgres
+    restart: always
+    ports:
+      - 4433:5432
+    environment:
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=pass
+      - APP_DB_USER=appuser
+      - APP_DB_PASS=apppass
+      - APP_DB_NAME=qagdev
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/

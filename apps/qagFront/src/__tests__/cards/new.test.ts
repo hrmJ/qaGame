@@ -47,4 +47,13 @@ describe('Form for adding new card', () => {
 		await userEvent.click(submit);
 		await findByText(/ei onnistunut/);
 	});
+
+	it.skip('Shows a validation error message if text is empy', async () => {
+		const error = 'Kirjoita jotain kortin tekstiksi';
+		server.use(rest.post('/cards', (_, res, ctx) => res(ctx.status(422), ctx.json({ error }))));
+		const { getByRole, findByText } = render(NewCardForm);
+		const submit = getByRole('button', { name: /Tallenna/ });
+		await userEvent.click(submit);
+		await findByText(error);
+	});
 });
