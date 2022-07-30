@@ -16,7 +16,7 @@ describe('Form for adding new card', () => {
 		getByLabelText('Kortin teksti');
 	});
 
-	it.only('Has the ability to choose q or a with q as default', () => {
+	it('Has the ability to choose q or a with q as default', () => {
 		const { getByRole } = render(NewCardForm);
 		const radioQ = getByRole('radio', { name: /Kysymys/ });
 		const radioA = getByRole('radio', { name: /Vastaus/ });
