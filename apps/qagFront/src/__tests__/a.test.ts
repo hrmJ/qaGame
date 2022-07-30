@@ -11,17 +11,15 @@ describe('answer screen', () => {
 
 	it('Shows a answer on init if request succesful ', async () => {
 		const text = 'text for a answer';
-		server.use(
-			rest.get('/cards/answer', (_, res, ctx) => res(ctx.status(200), ctx.json({ text })))
-		);
+		server.use(rest.get('/cards/a', (_, res, ctx) => res(ctx.status(200), ctx.json({ text }))));
 		const { findByText } = render(AnswerScreen);
 		await findByText(text);
 	});
 
 	it('Shows an error message on init if request not succesful ', async () => {
-		const error = 'Vastauksen lataaminen ei onnistunut';
+		const error = 'Lataaminen ei onnistunut';
 		server.use(
-			rest.get('/cards/answer', (_, res, ctx) => res(ctx.status(400), ctx.json({ error: '' })))
+			rest.get('/cards/a', (_, res, ctx) => res(ctx.status(400), ctx.json({ error: '' })))
 		);
 		const { findByText } = render(AnswerScreen);
 		await findByText(error);
