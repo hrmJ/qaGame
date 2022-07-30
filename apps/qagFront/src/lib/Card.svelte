@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-import { loadCard } from './services';
+	import { loadCard } from './services';
 	let cardLoadstate: Promise<Card> | null;
 	export let contentType: 'q' | 'a';
+	const noItemsTextBase = 'Kukaan ei ole lisännyt';
+	const noItemsText =
+		contentType === 'q' ? `${noItemsTextBase} kysymyksiä` : `${noItemsTextBase} vastauksia`;
 	interface Card {
 		contentType: 'q' | 'a';
 		text: string;
@@ -16,7 +19,7 @@ import { loadCard } from './services';
 	{#await cardLoadstate}
 		Ladataan korttia
 	{:then card}
-		{card?.text ?? ''}
+		{card === null ? noItemsText : card?.text ?? ''}
 	{:catch err}
 		{err.message}
 	{/await}

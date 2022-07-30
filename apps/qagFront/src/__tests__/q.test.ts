@@ -24,4 +24,11 @@ describe('question screen', () => {
 		const { findByText } = render(QuestionScreen);
 		await findByText(error);
 	});
+
+	it('Shows a message if empty list of questions returned', async () => {
+		const text = 'Kukaan ei ole lisännyt kysymyksiä';
+		server.use(rest.get('/cards/q', (_, res, ctx) => res(ctx.status(200), ctx.json(null))));
+		const { findByText } = render(QuestionScreen);
+		await findByText(text);
+	});
 });

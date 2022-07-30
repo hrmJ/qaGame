@@ -3,7 +3,9 @@
 	"compilerOptions": {
 		"paths": {
 			"$msw": ["src/mocks"],
-			"$msw/*": ["src/mocks/*"]
+			"$msw/*": ["src/mocks/*"],
+			"$lib": ["src/lib"],
+			"$lib/*": ["src/lib/*"]
 		},
 		"allowJs": true,
 		"checkJs": true,

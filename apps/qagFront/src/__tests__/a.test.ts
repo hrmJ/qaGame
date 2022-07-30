@@ -24,4 +24,10 @@ describe('answer screen', () => {
 		const { findByText } = render(AnswerScreen);
 		await findByText(error);
 	});
+	it('Shows a message if empty list of questions returned', async () => {
+		const text = 'Kukaan ei ole lisännyt vastauksia';
+		server.use(rest.get('/cards/a', (_, res, ctx) => res(ctx.status(200), ctx.json(null))));
+		const { findByText } = render(AnswerScreen);
+		await findByText(text);
+	});
 });
