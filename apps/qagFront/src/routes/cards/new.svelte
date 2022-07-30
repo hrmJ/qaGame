@@ -1,23 +1,15 @@
 <script lang="ts">
+	import { saveCard } from '$lib/services';
+
 	let cardSaveState: Promise<Response> | null;
 	interface Card {
 		contentType: 'q' | 'a';
 		text: string;
 	}
 	let card: Card = { contentType: 'q', text: '' };
-	const apiUrl = 'http://localhost:3000';
-	async function saveCard() {
-		const res = await fetch(`${apiUrl}/cards`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify(card)
-		}).catch(() => null);
-		if (!res?.ok) throw new Error('Tallentaminen ei onnistunut');
-		return res;
-	}
 	function submit(ev: SubmitEvent) {
 		ev.preventDefault();
-		cardSaveState = saveCard();
+		cardSaveState = saveCard(card);
 		setTimeout(() => (cardSaveState = null), 3000);
 		return cardSaveState;
 	}
