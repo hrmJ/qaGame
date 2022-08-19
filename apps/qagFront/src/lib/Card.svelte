@@ -11,8 +11,11 @@
 		text: string;
 	}
 	onMount(() => {
-		cardLoadstate = loadCard(contentType);
+		nextItem();
 	});
+	function nextItem() {
+		cardLoadstate = loadCard(contentType);
+	}
 </script>
 
 <article>
@@ -23,4 +26,6 @@
 	{:catch err}
 		{err.message}
 	{/await}
+
+	<button on:click={nextItem}>Uusi kysymys</button>
 </article>
