@@ -2,10 +2,15 @@
 	import { onMount } from 'svelte';
 	import { loadCard } from './services';
 	let cardLoadstate: Promise<Card> | null;
-	export let contentType: 'q' | 'a';
+	type ContentType = 'q' | 'a';
+	type TextDict = Record<ContentType, string>;
 	const noItemsTextBase = 'Kukaan ei ole lisännyt';
-	const noItemsText =
-		contentType === 'q' ? `${noItemsTextBase} kysymyksiä` : `${noItemsTextBase} vastauksia`;
+	const buttonTexts: TextDict = { a: 'Uusi vastaus', q: 'Uusi kysymys' };
+	const noItemsTexts: TextDict = {
+		a: `${noItemsTextBase} vastauksia`,
+		q: `${noItemsTextBase} kysymyksiä`
+	};
+	export let contentType: ContentType;
 	interface Card {
 		contentType: 'q' | 'a';
 		text: string;
@@ -13,19 +18,17 @@
 	onMount(() => {
 		nextItem();
 	});
-	function nextItem() {
-		cardLoadstate = loadCard(contentType);
-	}
+	const nextItem = () => (cardLoadstate = loadCard(contentType));
 </script>
 
 <article>
 	{#await cardLoadstate}
-		Ladataan korttia
+		<!-- skeleton state -->
 	{:then card}
-		{card === null ? noItemsText : card?.text ?? ''}
+		{card === null ? noItemsTexts[contentType] : card?.text ?? ''}
 	{:catch err}
 		{err.message}
 	{/await}
 
-	<button on:click={nextItem}>Uusi kysymys</button>
+	<button on:click={nextItem}>{buttonTexts[contentType]}</button>
 </article>

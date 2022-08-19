@@ -39,7 +39,6 @@ describe('question screen', () => {
 		server.use(
 			rest.get('/cards/q', (_, res, ctx) => res(ctx.status(200), ctx.json({ text: texts[0] })))
 		);
-
 		const { getByRole, findByText } = render(QuestionScreen);
 		const button = getByRole('button', { name: nextButtonText });
 		server.use(

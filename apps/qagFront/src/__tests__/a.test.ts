@@ -3,6 +3,7 @@ import { describe, it } from 'vitest';
 import AnswerScreen from '../routes/a.svelte';
 import { server } from 'src/setupTests';
 import { rest } from 'msw';
+import userEvent from '@testing-library/user-event';
 
 describe('answer screen', () => {
 	afterEach(() => {
@@ -29,5 +30,20 @@ describe('answer screen', () => {
 		server.use(rest.get('/cards/a', (_, res, ctx) => res(ctx.status(200), ctx.json(null))));
 		const { findByText } = render(AnswerScreen);
 		await findByText(text);
+	});
+
+	it('Renders the next question when the next button is clicked', async () => {
+		const texts = ['txt 1', 'txt 2'];
+		const nextButtonText = 'Uusi vastaus';
+		server.use(
+			rest.get('/cards/a', (_, res, ctx) => res(ctx.status(200), ctx.json({ text: texts[0] })))
+		);
+		const { getByRole, findByText } = render(AnswerScreen);
+		const button = getByRole('button', { name: nextButtonText });
+		server.use(
+			rest.get('/cards/a', (_, res, ctx) => res(ctx.status(200), ctx.json({ text: texts[1] })))
+		);
+		await userEvent.click(button);
+		await findByText(texts[1]);
 	});
 });
