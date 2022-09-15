@@ -47,4 +47,8 @@ describe('question screen', () => {
 		await userEvent.click(button);
 		await findByText(texts[1]);
 	});
+
+	it('iterates over the whole set of questions before showing a question again ', () => {
+		//laksjd
+	});
 });

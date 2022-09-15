@@ -21,16 +21,20 @@ describe("Enpoint for saving cards", () => {
     expect(resp.statusCode).toEqual(200);
   });
 
-  it("adds a card if payload is valid", async () => {
-    const text = "some text";
-    await app.inject({
-      method: "POST",
-      url: "/cards",
-      payload: { contentType: "q", text },
-    });
-    const inDb = await sql`select text from cards`;
-    expect(inDb).toHaveLength(1);
-  });
+  it(
+    "adds a card if payload is valid",
+    async () => {
+      const text = "some text";
+      await app.inject({
+        method: "POST",
+        url: "/cards",
+        payload: { contentType: "q", text },
+      });
+      const inDb = await sql`select text from cards`;
+      expect(inDb).toHaveLength(1);
+    },
+    { retry: 20 }
+  );
 
   it.skip("returns 422 if text is empty", async () => {
     const resp = await app.inject({

@@ -6,8 +6,11 @@ interface Card {
 	text: string;
 }
 
-export async function loadCard(contentType: 'q' | 'a') {
-	const res = await fetch(`${apiUrl}/cards/${contentType}`, {
+export async function loadCard(contentType: 'q' | 'a', usedIds?: string[]) {
+	const url = `${apiUrl}/cards/${contentType}`;
+	const stringParams = usedIds ?? [];
+	const params = stringParams.map((id) => new URLSearchParams({ used: id }));
+	const res = await fetch(url + params, {
 		headers: { 'Content-Type': 'application/json' }
 	}).catch(() => null);
 	if (!res?.ok) throw new Error('Lataaminen ei onnistunut');
