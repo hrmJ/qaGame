@@ -4,12 +4,13 @@ const apiUrl = 'http://localhost:3000';
 interface Card {
 	contentType: 'q' | 'a';
 	text: string;
+	id: string;
 }
 
-export async function loadCard(contentType: 'q' | 'a', usedIds?: string[]) {
-	const url = `${apiUrl}/cards/${contentType}`;
+export async function loadCard(contentType: 'q' | 'a', usedIds?: string[]): Promise<Card | null> {
+	const url = `${apiUrl}/cards/${contentType}?`;
 	const stringParams = usedIds ?? [];
-	const params = stringParams.map((id) => new URLSearchParams({ used: id }));
+	const params = new URLSearchParams(stringParams.map((id) => ['used', id]));
 	const res = await fetch(url + params, {
 		headers: { 'Content-Type': 'application/json' }
 	}).catch(() => null);

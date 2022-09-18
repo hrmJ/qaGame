@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { loadCard } from './services';
-	let cardLoadstate: Promise<Card> | null;
+	let cardLoadstate: 'idle' | 'loading' | 'success' | 'error' = 'idle';
+	let card: Card | null;
+	let error: string = '';
 	type ContentType = 'q' | 'a';
 	type TextDict = Record<ContentType, string>;
 	const noItemsTextBase = 'Kukaan ei ole lisännyt';
@@ -11,24 +13,37 @@
 		q: `${noItemsTextBase} kysymyksiä`
 	};
 	export let contentType: ContentType;
+	export let usedIds: string[] | undefined = undefined;
+	export let onCardLoaded: undefined | OnCardLoaded = undefined;
 	interface Card {
 		contentType: 'q' | 'a';
 		text: string;
+		id: string;
 	}
+	type OnCardLoaded = (id?: string) => unknown;
 	onMount(() => {
 		nextItem();
 	});
-	const nextItem = () => (cardLoadstate = loadCard(contentType));
+	async function nextItem() {
+		cardLoadstate = 'loading';
+		card = await loadCard(contentType, usedIds).catch((currentError: Error) => {
+			error = currentError?.message.replace('Error: ', '') ?? 'Lataus ei onnistu';
+			cardLoadstate = 'error';
+			return null;
+		});
+		onCardLoaded && onCardLoaded(card?.id);
+		cardLoadstate = 'success';
+	}
 </script>
 
 <article>
-	{#await cardLoadstate}
+	{#if cardLoadstate === 'loading'}
 		<!-- skeleton state -->
-	{:then card}
+	{:else if cardLoadstate === 'success'}
 		{card === null ? noItemsTexts[contentType] : card?.text ?? ''}
-	{:catch err}
-		{err.message}
-	{/await}
+	{:else if cardLoadstate === 'error'}
+		{error}
+	{/if}
 
 	<button on:click={nextItem}>{buttonTexts[contentType]}</button>
 </article>

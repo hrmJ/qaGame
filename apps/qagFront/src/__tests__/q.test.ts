@@ -5,7 +5,14 @@ import { server } from 'src/setupTests';
 import { rest } from 'msw';
 import userEvent from '@testing-library/user-event';
 
-describe('question screen', () => {
+const nextButtonText = 'Uusi kysymys';
+const initButtonText = /aloita alusta/i;
+const questionsInDb = [
+	{ text: 'first question', id: '1' },
+	{ text: 'second question', id: '2' }
+];
+
+describe.only('question screen', () => {
 	afterEach(() => {
 		cleanup();
 	});
@@ -35,7 +42,6 @@ describe('question screen', () => {
 
 	it('Renders the next question when the next button is clicked', async () => {
 		const texts = ['txt 1', 'txt 2'];
-		const nextButtonText = 'Uusi kysymys';
 		server.use(
 			rest.get('/cards/q', (_, res, ctx) => res(ctx.status(200), ctx.json({ text: texts[0] })))
 		);
@@ -48,7 +54,41 @@ describe('question screen', () => {
 		await findByText(texts[1]);
 	});
 
-	it('iterates over the whole set of questions before showing a question again ', () => {
+	it('Doesnt render the same question twice', async () => {
+		server.use(
+			rest.get('/cards/q', (req, res, ctx) => {
+				const params = req.url.searchParams;
+				const usedIds = params.get('used');
+				return res(ctx.status(200), ctx.json(questionsInDb.find((q) => !usedIds?.includes(q.id))));
+			})
+		);
+		const { getByRole, findByText, queryByText } = render(QuestionScreen);
+		const button = getByRole('button', { name: nextButtonText });
+		await userEvent.click(button);
+		await findByText(questionsInDb[0].text);
+		await userEvent.click(button);
+		expect(queryByText(questionsInDb[0].text)).not.toBeInTheDocument();
+		await findByText(questionsInDb[1].text);
+	});
+
+	//it('initializes the question store when "start over" clicked ', async () => {
+	//	const initspy = vi.spyOn(utils, 'initializeQuestions');
+	//	const { getByRole } = render(QuestionScreen);
+	//	const button = getByRole('button', { name: initButtonText });
+	//	await userEvent.click(button);
+	//	expect(initspy).toHaveBeenCalledTimes(2);
+	//	//laksjd
+	//});
+
+	//it('Does not initialize quetions if next queston clicked', async () => {
+	//	const initspy = vi.spyOn(utils, 'initializeQuestions');
+	//	const { getByRole } = render(QuestionScreen);
+	//	const button = getByRole('button', { name: nextButtonText });
+	//	await userEvent.click(button);
+	//	expect(initspy).toHaveBeenCalledTimes(1);
+	//});
+
+	it('ads', () => {
 		//laksjd
 	});
 });

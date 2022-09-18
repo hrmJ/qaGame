@@ -1,7 +1,6 @@
 import Fastify, { FastifyServerOptions } from "fastify";
 import cors from "@fastify/cors";
 import { sql } from "./db";
-import { bodySchema, loadQuestionSchema } from "./schemas";
 import { JsonSchemaToTsProvider } from "@fastify/type-provider-json-schema-to-ts";
 import { handleDbError } from "../utils";
 

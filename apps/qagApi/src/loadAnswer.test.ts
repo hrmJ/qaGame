@@ -1,9 +1,7 @@
+//
 import { build } from "./app";
 import { beforeEach, describe, expect, it } from "vitest";
 import { sql } from "./db";
-
-// build()
-//
 
 describe("Enpoint for loading an answer", () => {
   const app = build();
