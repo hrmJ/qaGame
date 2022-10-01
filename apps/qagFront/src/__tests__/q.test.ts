@@ -71,24 +71,13 @@ describe.only('question screen', () => {
 		await findByText(questionsInDb[1].text);
 	});
 
-	//it('initializes the question store when "start over" clicked ', async () => {
-	//	const initspy = vi.spyOn(utils, 'initializeQuestions');
-	//	const { getByRole } = render(QuestionScreen);
-	//	const button = getByRole('button', { name: initButtonText });
-	//	await userEvent.click(button);
-	//	expect(initspy).toHaveBeenCalledTimes(2);
-	//	//laksjd
-	//});
-
-	//it('Does not initialize quetions if next queston clicked', async () => {
-	//	const initspy = vi.spyOn(utils, 'initializeQuestions');
-	//	const { getByRole } = render(QuestionScreen);
-	//	const button = getByRole('button', { name: nextButtonText });
-	//	await userEvent.click(button);
-	//	expect(initspy).toHaveBeenCalledTimes(1);
-	//});
-
-	it('ads', () => {
-		//laksjd
+	it('Shows a message if all questions asked', async () => {
+		const text = 'Kysymykset loppuivat. Kiitos pelistä!';
+		server.use(
+			rest.get('/cards/q', (_, res, ctx) => res(ctx.status(200), ctx.json({ status: 'end' })))
+		);
+		const { findByText, queryByText } = render(QuestionScreen);
+		await findByText(text);
+		expect(queryByText(nextButtonText)).not.toBeInTheDocument();
 	});
 });

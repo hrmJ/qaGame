@@ -5,6 +5,7 @@ interface Card {
 	contentType: 'q' | 'a';
 	text: string;
 	id: string;
+	status?: string;
 }
 
 export async function loadCard(contentType: 'q' | 'a', usedIds?: string[]): Promise<Card | null> {

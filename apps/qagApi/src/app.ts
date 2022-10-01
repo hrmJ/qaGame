@@ -29,12 +29,20 @@ export function build(opts: FastifyServerOptions = {}) {
     async (request, res) => {
       const contenType = "q";
       const { used = ["-1"] } = request.query;
-      const filteredUsed = used.filter((id) => id !== undefined);
+      const filteredUsed = used
+        .filter((id) => id !== undefined)
+        .map((id) => Number(id));
       const [card] =
-        (await sql`SELECT text from cards  
+        (await sql`SELECT id, text from cards  
         WHERE content_type = ${contenType}
         AND id NOT IN ${sql(filteredUsed)} 
         ORDER BY RANDOM() limit 1`.catch(handleDbError)) ?? [];
+      console.log({ used, card });
+      if (used.length && !card) {
+        console.log("HUUU");
+        res.send({ status: "end" });
+        return;
+      }
       res.send(card ?? null);
     }
   );

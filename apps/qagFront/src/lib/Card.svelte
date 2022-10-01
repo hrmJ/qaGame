@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { loadCard } from './services';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 	let cardLoadstate: 'idle' | 'loading' | 'success' | 'error' = 'idle';
 	let card: Card | null;
 	let error: string = '';
@@ -15,15 +17,23 @@
 	export let contentType: ContentType;
 	export let usedIds: string[] | undefined = undefined;
 	export let onCardLoaded: undefined | OnCardLoaded = undefined;
+	export let gameEnded = false;
 	interface Card {
 		contentType: 'q' | 'a';
 		text: string;
 		id: string;
+		status?: string;
 	}
 	type OnCardLoaded = (id?: string) => unknown;
 	onMount(() => {
 		nextItem();
 	});
+
+	function checkIfEnded(card: Card | null) {
+		if (card?.status !== 'end') return;
+		dispatch('status', 'end');
+	}
+
 	async function nextItem() {
 		cardLoadstate = 'loading';
 		card = await loadCard(contentType, usedIds).catch((currentError: Error) => {
@@ -31,6 +41,7 @@
 			cardLoadstate = 'error';
 			return null;
 		});
+		checkIfEnded(card);
 		onCardLoaded && onCardLoaded(card?.id);
 		cardLoadstate = 'success';
 	}
@@ -45,5 +56,7 @@
 		{error}
 	{/if}
 
-	<button on:click={nextItem}>{buttonTexts[contentType]}</button>
+	{#if !gameEnded}
+		<button on:click={nextItem}>{buttonTexts[contentType]}</button>
+	{/if}
 </article>
