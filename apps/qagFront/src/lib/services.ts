@@ -1,5 +1,7 @@
 //
-const apiUrl = 'http://localhost:3000';
+const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
+console.debug({ apiUrl });
 
 interface Card {
 	contentType: 'q' | 'a';

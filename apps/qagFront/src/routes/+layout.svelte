@@ -1,5 +1,6 @@
 <script lang="ts">
 	const useMsw = import.meta.env.DEV;
+	import '../app.css';
 	let isReady = !useMsw;
 
 	if (useMsw && false) {

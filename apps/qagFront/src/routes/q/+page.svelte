@@ -19,15 +19,24 @@
 	}
 </script>
 
-<Card
-	contentType="q"
-	usedIds={usedQuestionIds}
-	onCardLoaded={markQuestionUsed}
-	on:status={endGame}
-	{gameEnded}
-/>
+<main>
+	{#if !gameEnded}
+		<Card
+			contentType="q"
+			usedIds={usedQuestionIds}
+			onCardLoaded={markQuestionUsed}
+			on:status={endGame}
+			{gameEnded}
+		/>
+	{:else}
+		<article>
+			<p>Kysymykset loppuivat. Kiitos pelistä!</p>
+			<footer><button on:click={initialize}>Aloita alusta</button></footer>
+		</article>
+	{/if}
+</main>
 
-{#if gameEnded}
-	<p>Kysymykset loppuivat. Kiitos pelistä!</p>
-{/if}
-<button on:click={initialize}>Aloita alusta</button>
+<style>
+	article {
+	}
+</style>

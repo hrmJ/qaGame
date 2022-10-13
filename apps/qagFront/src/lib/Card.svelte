@@ -48,15 +48,37 @@
 </script>
 
 <article>
-	{#if cardLoadstate === 'loading'}
-		<!-- skeleton state -->
-	{:else if cardLoadstate === 'success'}
-		{card === null ? noItemsTexts[contentType] : card?.text ?? ''}
-	{:else if cardLoadstate === 'error'}
-		{error}
-	{/if}
-
-	{#if !gameEnded}
-		<button on:click={nextItem}>{buttonTexts[contentType]}</button>
-	{/if}
+	<section>
+		{#if cardLoadstate === 'loading'}
+			<!-- skeleton state -->
+		{:else if cardLoadstate === 'success'}
+			{card === null ? noItemsTexts[contentType] : card?.text ?? ''}
+		{:else if cardLoadstate === 'error'}
+			{error}
+		{/if}
+	</section>
+	<footer>
+		{#if !gameEnded}
+			<button on:click={nextItem}>{buttonTexts[contentType]}</button>
+		{/if}
+	</footer>
 </article>
+
+<style>
+	article {
+		width: 75vw;
+		font-weight: 300;
+		max-width: 700px;
+		border: 1px solid var(--grey-300);
+		padding: var(--padding-lg);
+		border-radius: var(--border-radius-2);
+		color: var(--grey-900);
+		font-size: var(--font-md-1);
+		background: white;
+		box-shadow: var(--shadow-sm);
+	}
+	footer {
+		display: flex;
+		justify-content: end;
+	}
+</style>

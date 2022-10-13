@@ -11,7 +11,7 @@ interface Card {
 
 export function build(opts: FastifyServerOptions = {}) {
   const app = Fastify(opts).withTypeProvider<JsonSchemaToTsProvider>();
-  app.register(cors, {});
+  app.register(cors, { origin: "*" });
 
   app.get(
     "/cards/q",
