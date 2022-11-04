@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./dist",
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "lib": ["es6"],
+    "module": "es6",
+    "target": "es6",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "strict": true
+  },
+  "include": ["src/**/*"]
+}

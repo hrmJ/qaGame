@@ -84,7 +84,7 @@ packages:
   - "packages/*"
 ```
 
-Should I add something here? How about good old `package.json`?
+Should I add something here? How about `package.json`?
 
 ```
 {
@@ -119,7 +119,7 @@ Should I add something here? How about good old `package.json`?
 Nothing new here: the "workspaces" part is familiar, but does not really seem
 like the place to write configuration for the different parts of the monorepo.
 
-Here's the catch: it was way simpler than I thought. No need to configure: just
+Here's the catch: it was way simpler than I thought. No need to configure, just
 start creating apps by adding content to the apps folder. To add a backend just
 start a regular nodejs project in, say, `apps/backend`. To start a frontend create
 `apps/frontend`. For my use case, I went with the following structure:
@@ -187,8 +187,8 @@ architecture of a serious app. Apparently, the real benefits are, however, in
 optimizing the build process and making deployments fast as heck, reducing the
 workload of a ci/cd pipeline.... These benefits, [I
 hear](https://turborepo.org/docs/core-concepts/caching), are achieved, at least
-in part, by utilizing a caching system for project-specific tasks such as `npm run build`, `npm run test` etc.. Something to dig into later -- for now, I'm just
-enjoying the simple dev flow.
+in part, by utilizing a caching system for project-specific tasks such as `npm run build`, `npm run test` etc.. Something to dig into later -- for now, I'm
+just enjoying the simple dev flow.
 
 ### Installing packages
 
@@ -215,7 +215,24 @@ used by these apps_ inside the latter. For my toy project, I created the followi
 
 ```
 
-In the same vein as with apps, these, too, are just separate js projects
-inside the packages folder. `./eslint` contains a simple eslint config distributed
+In the same vein as apps, these, too, are just separate js projects
+inside the packages folder. The same way as `apps/qaApi` contains the backend app,
+`./eslint` contains a simple eslint config distributed
 as package and the same holds for `./prettier`. The beauty of the monorepo system
-is that
+is that making modifications and updating -- or even just installing -- the
+packages in the apps is a breeze.
+
+```
+cd apps/qagFront/
+npm install eslint-config
+```
+
+voilá, the shared eslint-config now in qagFront. If I had a separate library
+for utility functions called my-utility-lib (at `packages/my-utility-lib`), I would
+
+1. make changes in `packages/my-utility-lib`
+2. run the build command for my-utility-lib
+3. run `pnpm update my-utility-lib`
+   - inside e.g. `apps/qapApi`
+   - OR inside the project root
+4. Have the new changes available
