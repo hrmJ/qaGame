@@ -236,3 +236,9 @@ for utility functions called my-utility-lib (at `packages/my-utility-lib`), I wo
    - inside e.g. `apps/qapApi`
    - OR inside the project root
 4. Have the new changes available
+
+## What's next?
+
+Setting up pnpm + turborepo was a fun exercise. The next challenge I chose was
+to set up api testing inside the fastify-based backend + intergration testing
+the frontend using mock service worker. Stay tuned!
